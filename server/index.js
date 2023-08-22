@@ -10,7 +10,13 @@ import fileUpload from "express-fileupload"
 dotenv.config()
 const app=express();
 
-app.use(cors({credentials:true,origin:"http://localhost:5173"}))
+const corsConfig = {
+  origin: true,
+  credentials: true,
+};
+
+app.use(cors(corsConfig));
+app.options('*', cors(corsConfig))
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());

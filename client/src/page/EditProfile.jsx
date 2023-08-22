@@ -2,7 +2,7 @@ import Layout from "../component/Layout"
 import {useState,useEffect} from "react"
 import {AiOutlineCloudUpload} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
-import axios from "axios"
+import Axios from "../config/axios"
 import {useNavigate,useParams} from "react-router-dom"
 export default function EditProfile(){
   const [me,setMe]=useState("")
@@ -18,7 +18,7 @@ export default function EditProfile(){
   
   const getToken=async()=>{
     try{
-      const {data}=await axios.get("http://localhost:3000/token",{
+      const {data}=await Axios.get("/token",{
         withCredentials:true
       })
       getMyProfile(data.accesToken)
@@ -29,7 +29,7 @@ export default function EditProfile(){
   
   const getMyProfile=async(token)=>{
     try{
-      const {data}=await axios.get(`http://localhost:3000/profile/${id}`,{
+      const {data}=await Axios.get(`/profile/${id}`,{
         headers:{
           'Authorization':`Bearer ${token}`
         }
@@ -47,7 +47,7 @@ export default function EditProfile(){
     form.append("me",me)
     if(me.length > 1){
     try{
-      const {data}=await axios.get("http://localhost:3000/token",{
+      const {data}=await Axios.get("/token",{
         withCredentials:true
       })
       const token=data.accesToken
@@ -60,7 +60,7 @@ export default function EditProfile(){
   
   const editProfile=async(token,form)=>{
     try{
-      const response=await axios.patch(`http://localhost:3000/profile/${id}`,form,{
+      const response=await Axios.patch(`/profile/${id}`,form,{
         headers:{
           'Authorization':`Bearer ${token}`
         }

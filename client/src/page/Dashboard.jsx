@@ -3,6 +3,7 @@ import {useState,useEffect} from "react"
 import jwt_decode from "jwt-decode"
 import axios from "axios"
 import {useNavigate} from "react-router-dom"
+import Axios from "../config/axios"
 import CardPost from "../component/CardPost"
 import {BsPlusSquareFill} from "react-icons/bs"
 export default function Dashboard(){
@@ -17,14 +18,16 @@ export default function Dashboard(){
    getToken()
   },[])
 
-  const axiosToken=axios.create()
+  const axiosToken=axios.create({
+    baseURL:"https://lintagram.cyclic.cloud/",
+    withCredentials:true
+  })
   
   axiosToken.interceptors.request.use(async(config)=>{
     const current=new Date()
     if(expire * 1000 < current.getTime()){
-     const {data}=await axios.get("http://localhost:3000/token",{
-     withCredentials:true
-    })
+     const {data}=await Axios.get("/token")
+    console.log(data)
      config.headers.Authorization = `Bearer ${data.accesToken}`
     
      setToken(data.accesToken)
@@ -41,9 +44,7 @@ export default function Dashboard(){
   
  const getToken=async()=>{
    try{
-  const {data}=await axiosToken.get("http://localhost:3000/token",{
-    withCredentials:true
-  })
+  const {data}=await axiosToken.get("/token")
     setToken(data.accesToken)
     const decode=jwt_decode(data.accesToken)
     setName(decode.name)
@@ -55,15 +56,16 @@ export default function Dashboard(){
       getAllPost()
     }
    }catch(err){
+     console.log("in get token",err)
      if(err.response){
-       navigate("/")
+   
      }
    }
 }
   
   const getPost=async()=>{
     try{
-      const {data}=await axiosToken.get("http://localhost:3000/post/me",{
+      const {data}=await axiosToken.get("https://lintagram.cyclic.cloud/post/me",{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -76,7 +78,7 @@ export default function Dashboard(){
   
 const getAllPost=async()=>{
     try{
-      const {data}=await axiosToken.get("http://localhost:3000/post",{
+      const {data}=await axiosToken.get("https://lintagram.cyclic.cloud/post",{
         headers:{
           Authorization:`Bearer ${token}`
         }

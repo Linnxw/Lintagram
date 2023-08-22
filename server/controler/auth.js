@@ -4,7 +4,6 @@ import passwordHash from "password-hash"
 export const login=async(req,res)=>{
   const token = req.cookies.refreshToken
   const {email,password} = req.body
-  console.log({token})
   try{
     const user=await User.findOne({
       where:{

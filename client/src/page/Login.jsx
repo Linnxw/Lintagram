@@ -1,5 +1,6 @@
 import {BsEyeFill} from "react-icons/bs"
 import {BsEyeSlashFill} from "react-icons/bs"
+import Axios from "../config/axios"
 import axios from "axios"
 import {useNavigate} from "react-router-dom"
 import {useState,useEffect} from "react"
@@ -13,17 +14,18 @@ export default function Login(){
   const handleLogin=async(e)=>{
     e.preventDefault()
    try{
-   const response= await axios.post("http://localhost:3000/login",{
-     email:email,
-     password:password
-     
-   },{
-      withCredentials:true
-    })
+   const response = await axios.post("https://lintagram.cyclic.cloud/login",{
+     email,
+     password
+    },{
+    withCredentials:true
+   }) 
+   console.log(response)
     if(response.status === 200){
       navigate("/dashboard")
     }
   }catch(err){
+    console.log(err)
     if(err.response){
       setErr(err.response.data.msg)
     }

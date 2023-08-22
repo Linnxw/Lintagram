@@ -7,6 +7,7 @@ import axios from "axios"
 import {useNavigate} from "react-router-dom"
 import {FaUserEdit} from "react-icons/fa"
 import {RiUserSharedFill} from "react-icons/ri"
+import Axios from "../config/axios"
 import jwt_decode from "jwt-decode"
 import {useEffect,useState} from "react"
 export default function Akun(){
@@ -30,12 +31,14 @@ export default function Akun(){
     console.log(dataProfile)
   },[])
   
-  const axiosToken=axios.create()
+  const axiosToken=axios.create({
+    baseURL:"https://lintagram.cyclic.cloud"
+  })
   
   axiosToken.interceptors.request.use(async(config)=>{
     const current=new Date()
     if(exp*1000 < current.getTime()){
-    const {data}=await axios.get("http://localhost:3000/token",{
+    const {data}=await Axios.get("/token",{
       withCredentials:true
     })
     config.headers.Authorization=`Bearer ${data.accesToken}`
@@ -51,7 +54,7 @@ export default function Akun(){
   
   const getToken=async()=>{
     try{
-     const {data}=await axiosToken.get("http://localhost:3000/token",{
+     const {data}=await axiosToken.get("/token",{
       withCredentials:true
     })
      setToken(data.accesToken)
@@ -67,7 +70,7 @@ export default function Akun(){
   }
   const getUser=async(token,id)=>{
     try{
-      const {data}=await axiosToken.get("http://localhost:3000/user/"+id,{
+      const {data}=await axiosToken.get("/user/"+id,{
          headers:{
           Authorization:`Bearer ${token}`
         }

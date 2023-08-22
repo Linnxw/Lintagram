@@ -5,13 +5,13 @@ import {FiLogOut} from "react-icons/fi"
 import {FiLogIn} from "react-icons/fi"
 import {IoMdClose} from "react-icons/io"
 import {useState,useEffect} from "react"
-import axios from "axios"
+import Axios from "../config/axios"
 import {useNavigate} from "react-router-dom"
 export default function Sidebar({open,handleOpen}){
   const navigate=useNavigate()
   const logout=async()=>{
    try{
-    const response=await axios.delete("http://localhost:3000/logout",{
+    const response=await Axios.delete("/logout",{
       withCredentials:true
     })
     navigate("/")

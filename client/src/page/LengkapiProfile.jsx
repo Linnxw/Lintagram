@@ -2,7 +2,7 @@ import Layout from "../component/Layout"
 import {useState} from "react"
 import {AiOutlineCloudUpload} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
-import axios from "axios"
+import Axios from "../config/axios"
 import {useNavigate} from "react-router-dom"
 export default function LengkapiProfile(){
   const [me,setMe]=useState("")
@@ -18,7 +18,7 @@ export default function LengkapiProfile(){
     form.append("me",me)
     if(me.length > 1 && file){
     try{
-      const {data}=await axios.get("http://localhost:3000/token",{
+      const {data}=await Axios.get("/token",{
         withCredentials:true
       })
       
@@ -32,7 +32,7 @@ export default function LengkapiProfile(){
   
   const postProfile=async(token,form)=>{
     try{
-      const response=await axios.post("http://localhost:3000/profile",form,{
+      const response=await Axios.post("/profile",form,{
         headers:{
           'Authorization':`Bearer ${token}`
         }

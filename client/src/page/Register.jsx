@@ -1,6 +1,6 @@
 import {BsEyeFill} from "react-icons/bs"
 import {BsEyeSlashFill} from "react-icons/bs"
-import axios from "axios"
+import Axios from "../config/axios"
 import {useState} from "react"
 import {useNavigate} from "react-router-dom"
 export default function Register(){
@@ -17,7 +17,7 @@ export default function Register(){
   
   const register=async(token)=>{
    try{
-    const response=await axios.post("http://localhost:3000/user",{
+    const response=await Axios.post("/user",{
      name:data.name,
      email:data.email,
      password:data.password,
@@ -45,10 +45,10 @@ export default function Register(){
     if(data.role === ""){
       setData({...data,role:"user"})
     }
-    const {data}=await axios.get("http://localhost:3000/token",{
+    const response=await Axios.get("/token",{
       withCredentials:true
     })
-    register(data.accesToken)
+    register(response.data.accesToken)
   }catch(err){
     console.log(err)
   }

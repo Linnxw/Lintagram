@@ -1,5 +1,5 @@
 import Layout from "../component/Layout"
-import axios from "axios"
+import Axios from "../config/axios"
 import CardPost from "../component/CardPost"
 import InputSearch from "../component/InputSearch"
 import {useEffect,useState} from "react"
@@ -12,17 +12,16 @@ export default function Social(){
   },[])
   
   const getAllPost=async()=>{
-    const {data}=await axios.get("http://localhost:3000/post")
+    const {data}=await Axios.get("/post")
     setPost(data)
     setErr("")
   }
   
   const searchPost=async()=>{
     try{
-     const {data}=await axios.get(`http://localhost:3000/post/search/${search}`)
+     const {data}=await Axios.get(`/post/search/${search}`)
      setPost(data)
      setErr("")
-     
     }catch(err){
       setErr(err.response.data.msg)
       setPost([])

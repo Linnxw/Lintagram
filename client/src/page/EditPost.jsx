@@ -2,7 +2,7 @@ import Layout from "../component/Layout"
 import {useState} from "react"
 import {AiOutlineCloudUpload} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
-import axios from "axios"
+import Axios from "../config/axios"
 import {useNavigate,useParams} from "react-router-dom"
 export default function EditPost(){
   const [title,setTitle]=useState("")
@@ -18,7 +18,7 @@ export default function EditPost(){
     form.append("file",file)
     form.append("title",title)
     try{
-      const {data}=await axios.get("http://localhost:3000/token",{
+      const {data}=await Axios.get("/token",{
         withCredentials:true
       })
       const token=data.accesToken
@@ -30,7 +30,7 @@ export default function EditPost(){
   
   const editPost=async(token,form)=>{
     try{
-      const response=await axios.patch(`http://localhost:3000/post/${id}`,form,{
+      const response=await Axios.patch(`/post/${id}`,form,{
         headers:{
           'Authorization':`Bearer ${token}`
         }
